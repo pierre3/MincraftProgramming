@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "MinecraftProgramming": {
+      "commandName": "Project",
+      "commandLineArgs": "title -t \"Hello, Minecraft!\"",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "local"
+      }
+    }
+  }
+}
