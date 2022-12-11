@@ -1,5 +1,6 @@
 ﻿internal class AppSettings
 {
+    public string DefaultPlayer { get; set; } = "player";
     public MinecraftServer MinecraftServer { get; set; } = new MinecraftServer();
 }
 

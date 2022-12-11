@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
 using MinecraftConnection;
-using System.Runtime.CompilerServices;
 
 class MinecraftApp : ConsoleAppBase
 {
@@ -8,13 +7,13 @@ class MinecraftApp : ConsoleAppBase
     private IOptions<AppSettings> options;
     public MinecraftApp(IOptions<AppSettings> options)
     {
-        this.options= options;
+        this.options = options;
         var server = options.Value.MinecraftServer;
         command = new MinecraftCommands(server.Address, server.Port, server.Pass);
     }
 
     [Command("title")]
-    public void DisplayTitle([Option("t")]string title)
+    public void DisplayTitle([Option("t")] string title)
     {
         command.DisplayTitle(title);
     }
@@ -33,5 +32,24 @@ class MinecraftApp : ConsoleAppBase
             command.DisplayMessage(message);
             command.Wait(wait);
         }
+    }
+
+    [Command("setBlock")]
+    public void SetBlock([Option("x")] int x, [Option("y")] int y, [Option("z")] int z, [Option("id")] string blockId)
+    {
+        command.SetBlock(x, y, z, blockId);
+    }
+
+    [Command("setBlockP")]
+    public void SetBlockP([Option("id")] string blockId, [Option("p")] string? playerName = default)
+    {
+        var p = command.GetPlayerData(playerName ?? options.Value.DefaultPlayer).Postision;
+        command.SetBlock((int)p.X, (int)p.Y, (int)p.Z, blockId);
+    }
+
+    [Command("giveItem")]
+    public void GiveItem([Option("i")] string itemName, [Option("c")]int count = 1, [Option("p")] string? playerName = default)
+    {
+        command.SendCommand($"give {playerName ?? options.Value.DefaultPlayer} {itemName} {count}");
     }
 }
